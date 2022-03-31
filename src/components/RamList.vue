@@ -46,13 +46,10 @@
       <q-tr :props="props">
       <q-td :props="props" key='id'>
         {{props.row.id}}
-        <q-popup-edit v-model="props.row.id" title="Edit the number" auto-save v-slot="scope" class="bg-grey-10 text-white">
-              <q-input v-model="scope.value" dense autofocus counter @keyup.enter="scope.set" dark color="white" />
-            </q-popup-edit>
       </q-td>
       <q-td :props="props" key='name'>
         {{props.row.name}}
-        <q-popup-edit v-model="props.row.name" title="Edit the name" auto-save v-slot="scope" class="bg-grey-10 text-white">
+        <q-popup-edit v-model="props.row.name" title="Edit the name" auto-save v-slot="scope" class="bg-grey-10 text-white" @keyup.enter="save(props.row.id, props.row.name)"  >
               <q-input v-model="scope.value" dense autofocus counter @keyup.enter="scope.set" dark color="white" />
             </q-popup-edit>
       </q-td>
@@ -77,7 +74,7 @@
 </q-page>
 </template>
 <script lang="ts">
-import { defineComponent, ref, onMounted, watch } from 'vue';
+import { defineComponent, ref, onMounted } from 'vue';
 import axios from 'axios';
 //jj. interfaces
 import { Rangeob, St, heroesObj} from '../deftypes/models';
@@ -157,13 +154,21 @@ export default defineComponent({
     };
     fetchRaM();
 
+    //jj. this is function taht saveing edited cell and sending to server
+    const save = (id : number, name: string ):void => {
+        console.log(id, name)
+        for(let i = 0; i < heroes.value.length; i++){
+            //console.log(heroes.value[i].name);
+             if(heroes.value[i].id == id){
+                console.log(heroes.value[i], name)
+            //     el.name=name
+            }
 
-   //jj. 
-    watch(heroesDplay, (val) => {if(val){
-      console.log('data is not desame anymore ', heroesDplay.value);
-      console.log(val);
+        }
+
+         axios.post('http://localhost:3333/waiting', heroes.value)
+    
     }
-    });
 
     
 
@@ -179,7 +184,8 @@ export default defineComponent({
         pagination,
         snap,
         search,
-        onFilters
+        onFilters,
+        save
      };
   },
 });
