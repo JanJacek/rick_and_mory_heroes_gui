@@ -12,18 +12,18 @@
     <template #top-row>
         <q-td style="display:block">
         <q-badge color="grey-8">
-        Chose range: {{ 1 }} to {{ heroesDplay.length }}
+        Chose range: {{ 1 }} to {{ 100 }}
         </q-badge>
         <div>
             <!-- jj place for range filter -->
             <q-range
                 v-model="snap"
                 :min="0"
-                :max="heroesDplay.length"
+                :max="100"
                 :step="1"
                 label
-                snap
-                @update:model-value="printThis()" 
+                
+                @update:model-value="onFilters()" 
             ></q-range>
         </div>
         </q-td>
@@ -34,7 +34,7 @@
                 v-model="search" 
                 dark color="white" 
                 label="Znajdź bohatera"
-                @update:model-value="onSearch()" 
+                @update:model-value="onFilters()" 
             >
                 <template v-slot:append>
                     <q-icon name="search" color="white" />
@@ -52,7 +52,7 @@
       </q-td>
       <q-td :props="props" key='name'>
         {{props.row.name}}
-        <q-popup-edit v-model="props.row.name" title="Edit the number" auto-save v-slot="scope" class="bg-grey-10 text-white">
+        <q-popup-edit v-model="props.row.name" title="Edit the name" auto-save v-slot="scope" class="bg-grey-10 text-white">
               <q-input v-model="scope.value" dense autofocus counter @keyup.enter="scope.set" dark color="white" />
             </q-popup-edit>
       </q-td>
@@ -60,7 +60,7 @@
         <q-img :src="props.row.image"
           spinner-color="white"
           style="height: 100px; max-width: 100px; border-radius: 5px"></q-img>
-         <q-popup-edit v-model="props.row.image" title="Edit the number" auto-save v-slot="scope" class="bg-grey-10 text-white">
+         <q-popup-edit v-model="props.row.image" title="Edit the picture" auto-save v-slot="scope" class="bg-grey-10 text-white">
               <q-input v-model="scope.value" dense autofocus counter @keyup.enter="scope.set" dark color="white" />
             </q-popup-edit>
       </q-td>
@@ -77,10 +77,10 @@
 </q-page>
 </template>
 <script lang="ts">
-import { defineComponent, ref, onMounted} from 'vue';
+import { defineComponent, ref, onMounted, watch } from 'vue';
 import axios from 'axios';
 //jj. interfaces
-import { Rangeob, St} from '../deftypes/models';
+import { Rangeob, St, heroesObj} from '../deftypes/models';
 //import { SSL_OP_NETSCAPE_REUSE_CIPHER_CHANGE_BUG } from 'constants';
 
 export default defineComponent({
@@ -90,21 +90,21 @@ export default defineComponent({
 
     const loading = ref(true) 
     
-    const heroes = ref([])
+    const heroes = ref<heroesObj[]>([])
 
-    let heroesDplay = ref([])
+    let heroesDplay = ref<heroesObj[]>([])
 
-    const pagination = ref([{
+    const pagination = ref({
         page:5,
         rowsPerPage: 20,
         rowsNumber:  100,
-    }])
+    })
 
     //jj. my simple variable test
-    let search = ref<St>(null)
+    let search = ref<St>('')
 
     //jj. define this type Jan 
-    const columns = [
+    const columns = ref([
         {
             name: 'id',
             label: 'Id',
@@ -122,27 +122,28 @@ export default defineComponent({
             label: 'Zdjęcie',
             field: 'image',
             align: 'center'
-        }
-    ];
+        }   
+    ]);
      let snap = ref<Rangeob>(
       {
-        min: 1,
-        max: 2
+        min: 0,
+        max: 100
       }
     );
 
     //jj. filter by range handler
-    const printThis = ():void => {
-        console.log(snap.value);
-        console.log(heroes.value.filter(el=> el.id <= snap.value.max && el.id >=  snap.value.min ))
-        heroesDplay.value = heroes.value.filter(el=> el.id <= snap.value.max )
-        heroesDplay.value = heroes.value.filter(el=> el.id >= snap.value.min )
-    }
+    const onFilters = ():void => {
+        heroesDplay.value = heroes.value.filter(el => {return el.id> snap.value.min && el.id <= snap.value.max && el.name.toLowerCase().includes(search.value.toLowerCase())})
 
-    //jj. filter by searcz input
-    const onSearch = (): void => {
-        heroesDplay.value = heroes.value.filter(el=> el.name.toLowerCase().includes(search.value.toLowerCase()))
-    };
+        //jj. if search hero input should need to narrow down the range bar
+
+        // let miniMax = [];
+        // for(let i = 0; i<heroesDplay.value.length; i++){
+        // miniMax.push(heroesDplay.value[i].id)
+        // }
+        // snap.value.max = Math.max(...miniMax)
+        // snap.value.min = Math.min(...miniMax)
+    }
 
     const fetchRaM = () => {
         axios.get('http://localhost:3333/heroes')
@@ -156,6 +157,17 @@ export default defineComponent({
     };
     fetchRaM();
 
+
+   //jj. 
+    watch(heroesDplay, (val) => {if(val){
+      console.log('data is not desame anymore ', heroesDplay.value);
+      console.log(val);
+    }
+    });
+
+    
+
+    //jj. just to check if mounted works as it should 
     onMounted(() => {
         console.log('hello nice to meet you');
     });
@@ -167,8 +179,7 @@ export default defineComponent({
         pagination,
         snap,
         search,
-        onSearch,
-        printThis
+        onFilters
      };
   },
 });
