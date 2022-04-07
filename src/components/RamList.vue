@@ -78,7 +78,8 @@ import { defineComponent, ref, onMounted } from 'vue';
 import axios from 'axios';
 //jj. interfaces
 import { Rangeob, St, heroesObj} from '../deftypes/models';
-//import { SSL_OP_NETSCAPE_REUSE_CIPHER_CHANGE_BUG } from 'constants';
+//move post list to transsmission
+// import {grabList} from '../transmission/apiserv'
 
 export default defineComponent({
   name: 'RamList',
@@ -132,7 +133,7 @@ export default defineComponent({
     const onFilters = ():void => {
         heroesDplay.value = heroes.value.filter(el => {return el.id> snap.value.min && el.id <= snap.value.max && el.name.toLowerCase().includes(search.value.toLowerCase())})
 
-        //jj. if search hero input should need to narrow down the range bar
+        //jj. this is  code part to consider it change range bar depend on search input probably dead path
 
         // let miniMax = [];
         // for(let i = 0; i<heroesDplay.value.length; i++){
@@ -142,17 +143,6 @@ export default defineComponent({
         // snap.value.min = Math.min(...miniMax)
     }
 
-    const fetchRaM = () => {
-        axios.get('http://localhost:3333/heroes')
-        .then(res => {
-        heroes.value = res.data.results;
-        heroesDplay.value = res.data.results;
-        })
-        .finally(()=>{
-        loading.value = false;
-        })
-    };
-    fetchRaM();
 
     //jj. this is function taht saveing edited cell and sending to server
     const save = (id : number, name: string ):void => {
@@ -165,18 +155,22 @@ export default defineComponent({
             }
 
         }
-
-         axios.post('http://localhost:3333/waiting', heroes.value)
+         axios.post('http://localhost:3333/lilisten', heroes.value)
     
     }
 
-    
-
-    //jj. just to check if mounted works as it should 
-    onMounted(() => {
+    //jj. On mounted for fill the grid
+    onMounted(async () => {
         console.log('hello nice to meet you');
-    });
-
+        await axios.post('http://localhost:3333/api/heroes/list')
+        .then(res => {
+        heroes.value = res.data;
+        heroesDplay.value = res.data;
+        console.log(res)
+        }).catch(err=>{console.log(err.message);}).finally(()=>{
+        loading.value = false;
+        })
+    })
     return {
         loading,
         heroesDplay,
