@@ -4,7 +4,7 @@
         :loading="loading"
         :rows="heroesDplay"
         title="Welcome to the one of the many universe"
-        class="q-pa-md bg-brand text-white"
+        class="q-pa-md bg-brand text-white image"
         :columns="columns"
         separator="none"
         :pagination="pagination"
@@ -185,6 +185,14 @@ export default defineComponent({
 
 <style>
 .bg-brand {
-  background: #000000 !important;
+  background-image: url(../assets/rnmfigures.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: black;
 }
+/* .image {
+    background-image: url(../assets/rmlogo-01.png);
+    background-size: contain;
+  } */
+
 </style>
