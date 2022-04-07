@@ -155,7 +155,7 @@ export default defineComponent({
             }
 
         }
-         axios.post('http://localhost:3333/lilisten', heroes.value)
+         axios.post('http://localhost:3333/api/uplist/listen', heroes.value)
     
     }
 
