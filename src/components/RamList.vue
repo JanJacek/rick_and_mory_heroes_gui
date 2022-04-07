@@ -1,13 +1,15 @@
 <template>
 <q-page class="q-ma-xl">
     <q-table
+        dark
         :loading="loading"
         :rows="heroesDplay"
         title="Welcome to the one of the many universe"
-        class="q-pa-md bg-brand text-white image"
+        class="q-pa-md bg-brand text-white image "
         :columns="columns"
         separator="none"
         :pagination="pagination"
+        :rows-per-page-options="[5,10,20,0]"
     >
     <template #top-row>
         <q-td style="display:block">
@@ -189,7 +191,12 @@ export default defineComponent({
   background-repeat: no-repeat;
   background-position: center;
   background-color: black;
+  color: white;
 }
+.q-table--dark tbody td:before {
+    background: rgba(22, 138, 247, 0.082);
+}
+
 /* .image {
     background-image: url(../assets/rmlogo-01.png);
     background-size: contain;
