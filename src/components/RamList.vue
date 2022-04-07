@@ -93,9 +93,7 @@ export default defineComponent({
     let heroesDplay = ref<heroesObj[]>([])
 
     const pagination = ref({
-        page:5,
-        rowsPerPage: 20,
-        rowsNumber:  100,
+        rowsPerPage: 5,
     })
 
     //jj. my simple variable test
@@ -155,7 +153,7 @@ export default defineComponent({
             }
 
         }
-         axios.post('http://localhost:3333/api/uplist/listen', heroes.value)
+        axios.post('http://localhost:3333/api/uplist/listen', heroes.value) 
     
     }
 
@@ -167,7 +165,7 @@ export default defineComponent({
         heroes.value = res.data;
         heroesDplay.value = res.data;
         console.log(res)
-        }).catch(err=>{console.log(err.message);}).finally(()=>{
+        }).catch(err=>{alert(err.message);}).finally(()=>{
         loading.value = false;
         })
     })
