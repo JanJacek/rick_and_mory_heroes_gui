@@ -3,8 +3,8 @@
     <q-table
         :loading="loading"
         :rows="heroesDplay"
-        title="Rick And Morty character list"
-        class="q-pa-md bg-grey-10 text-white"
+        title="Welcome to the one of the many universe"
+        class="q-pa-md bg-brand text-white"
         :columns="columns"
         separator="none"
         :pagination="pagination"
@@ -33,7 +33,7 @@
                 dense debounce="400" 
                 v-model="search" 
                 dark color="white" 
-                label="Znajdź bohatera"
+                label="Find character"
                 @update:model-value="onFilters()" 
             >
                 <template v-slot:append>
@@ -111,13 +111,13 @@ export default defineComponent({
         },
         {
             name: 'name',
-            label: 'Imię i nazwisko',
+            label: 'Name',
             field: 'name',
             align: 'left'
         },
         {
             name: 'image',
-            label: 'Zdjęcie',
+            label: 'Picture',
             field: 'image',
             align: 'center'
         }   
@@ -184,3 +184,9 @@ export default defineComponent({
   },
 });
 </script>
+
+<style>
+.bg-brand {
+  background: #000000 !important;
+}
+</style>

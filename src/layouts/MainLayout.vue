@@ -1,7 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
-      <q-toolbar>
+      <q-toolbar class="bg-jolo">
         <q-btn
           flat
           dense
@@ -12,13 +12,13 @@
         />
 
         <q-toolbar-title>
-          Quasar App
+          Rick and Morty list
         </q-toolbar-title>
 
         <div>Quasar v{{ $q.version }}</div>
       </q-toolbar>
+      <div class="bg-teal-3" style="height: 10px;"></div>
     </q-header>
-
     <q-drawer
       v-model="leftDrawerOpen"
       show-if-above
@@ -39,7 +39,8 @@
       </q-list>
     </q-drawer>
 
-    <q-page-container>
+
+    <q-page-container class="q-pa-md bg-image">
       <router-view />
     </q-page-container>
   </q-layout>
@@ -51,47 +52,12 @@ import EssentialLink from 'components/EssentialLink.vue';
 
 const linksList = [
   {
-    title: 'Docs',
-    caption: 'quasar.dev',
+    title: 'Rick and Morty official',
+    caption: 'Find out more about',
     icon: 'school',
-    link: 'https://quasar.dev'
+    link: 'https://www.adultswim.com/videos/rick-and-morty'
   },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
+
 ];
 
 export default defineComponent({
@@ -114,3 +80,14 @@ export default defineComponent({
   }
 });
 </script>
+<style>
+
+  .bg-image {
+    background: linear-gradient(0deg, rgba(4,166,131,1) 0%, rgba(4,125,197,1) 50%, rgba(120,4,197,1) 100%);
+    background-size: contain;
+  }
+  .bg-jolo{
+    background: #000000 !important;
+  }
+
+</style>
