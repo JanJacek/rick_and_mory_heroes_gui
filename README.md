@@ -1,6 +1,6 @@
 # Quasar App (ram-list)
 
-This is simple app written in vue extended by quasar. 
+This is simple app written in vue with ts extended by quasar. 
 Made for one of my recruitment for work.
 It display characters list of Rick and Morty Cartoon.
 You can add, delete, modify the list and save it. 
